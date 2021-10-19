@@ -1,0 +1,8 @@
+
+//Atlas 連線版
+"mongodb": "mongodb+srv://jackadmin:jack12345@cluster0.9z4ws.mongodb.net/date?retryWrites=true&w=majority"
+"mongodb": mongodb+srv://jackliang:k65432110@linebotorder.ir6p1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+//Local Mongo 連線版
+"mongodb": "mongodb://localhost:27017/",
+"mongoDatebase": "feather_sample_2"
