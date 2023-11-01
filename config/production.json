@@ -1,4 +1,4 @@
 {
-  "host": "date-app.feathersjs.com",
+  "host": "featherserver-app.feathersjs.com",
   "port": "PORT"
 }
