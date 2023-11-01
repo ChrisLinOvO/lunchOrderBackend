@@ -1,7 +1,13 @@
 const line = require('@line/bot-sdk');
+const dotenv=require("dotenv");
+dotenv.config();
 const config = {//紳士們
-    channelAccessToken: 'RZfd39b+zZD4RGWGxFQW0KO7KJW2igvniygWsa7bNUK8SecofyJzDNThgh+OkBEFOWACXL3usfojLnZfquhnf6ShQ0pBK4V/s8oz9dywgbKHWMqhRePM3ftKqvwR+tv6AEkhf8uZWdkbuvZfp/3GlQdB04t89/1O/w1cDnyilFU=',
-    channelSecret: 'f8ca4cf60a4fb112304a470895fa58fe'
+    channelAccessToken: process.env.channelAccessToken,
+    channelSecret: process.env.channelSecret
+    // chris
+    // channelAccessToken: 'RZfd39b+zZD4RGWGxFQW0KO7KJW2igvniygWsa7bNUK8SecofyJzDNThgh+OkBEFOWACXL3usfojLnZfquhnf6ShQ0pBK4V/s8oz9dywgbKHWMqhRePM3ftKqvwR+tv6AEkhf8uZWdkbuvZfp/3GlQdB04t89/1O/w1cDnyilFU=',
+    // channelSecret: 'f8ca4cf60a4fb112304a470895fa58fe'
+    // jack
     // channelAccessToken: 'YMCXl4/O641kxN2g2i0N1yJUR8DPYf16QzKtoUdp3Amb/oUt2I66R81w3Gx4Rf/BpYnYA8MyNSQp9uITkGdPWBS1DMi7OOIJrkAiclu72MF7PEJJvKCgyTv67CPu/MxtbymdkuJWv75n4ORf9pKqEAdB04t89/1O/w1cDnyilFU=',
     // channelSecret: '157788c7b350bb50ebde8a31c292f08d'
 }
