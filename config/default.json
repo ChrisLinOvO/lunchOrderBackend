@@ -28,6 +28,6 @@
       "passwordField": "password"
     }
   },
-  "domain":"https://lunchorderbot.herokuapp.com",  
-  "mongodb": "mongodb+srv://jackliang:k65432110@linebotorder.ir6p1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  "domain":"https://lunch-linebot.onrender.com",  
+  "mongodb": "mongodb+srv://chris0621:chris0621@cluster0.kyuxv1w.mongodb.net/?retryWrites=true&w=majority"
 }
