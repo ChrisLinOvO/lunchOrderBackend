@@ -1,45 +1,57 @@
-# date
+# EZCON 午餐訂購系統後端
 
-> p to p 
+午餐訂購系統的後端服務，基於 Feathers Framework 構建。
 
-## About
+## 功能
 
-This project uses [Feathers](http://feathersjs.com). An open source web framework for building modern real-time applications.
+- 午餐訂購管理 API
+- 即時通知（LINE Bot 整合）
+- 使用者認證
+- MongoDB 資料庫
 
-## Getting Started
+## 環境變數
 
-Getting up and running is as easy as 1, 2, 3.
+複製 `.env.example` 為 `.env` 並填入以下內容：
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
+| 變數 | 說明 |
+|------|------|
+| `channelAccessToken` | LINE Channel Access Token |
+| `channelSecret` | LINE Channel Secret |
+| `mongodbdata` | MongoDB 連線字串 |
 
-    ```
-    cd path/to/date
-    npm install
-    ```
+## 開發
 
-3. Start your app
+```bash
+# 安裝依賴
+npm install
 
-    ```
-    npm start
-    ```
+# 啟動開發伺服器
+npm run dev
 
-## Testing
+# 執行測試
+npm test
 
-Simply run `npm test` and all your tests in the `test/` directory will be run.
-
-## Scaffolding
-
-Feathers has a powerful command line interface. Here are a few things it can do:
-
-```
-$ npm install -g @feathersjs/cli          # Install Feathers CLI
-
-$ feathers generate service               # Generate a new Service
-$ feathers generate hook                  # Generate a new Hook
-$ feathers help                           # Show all commands
+# 啟動生產環境
+npm start
 ```
 
-## Help
+## 架構
 
-For more information on all the things you can do with Feathers visit [docs.feathersjs.com](http://docs.feathersjs.com).
+```
+src/
+  app.js          — Feathers Express 應用程式
+  index.js        — 伺服器入口
+  logger.js       — Winston 日誌設定
+config/
+  default.json    — 預設設定
+  production.json — 生產環境設定
+  test.json       — 測試環境設定
+```
+
+## 部署
+
+已設定 GitHub Actions 自動部署，合并到 master 分支後自動觸發。
+
+## 授權
+
+ISC
