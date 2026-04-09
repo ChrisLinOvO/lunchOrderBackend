@@ -4,30 +4,31 @@
   "public": "../public/build",
   "paginate": {
     "default": 10,
-    "max": 50
+    "max": 25
   },
   "authentication": {
+    "secret": "AUTH_SECRET_PLACEHOLDER",
     "entity": "user",
     "service": "user",
-    "secret": "H8xAWZCNHNb9DMILub03drf7ceE=",
-    "authStrategies": [
-      "jwt",
-      "local"
-    ],
-    "jwtOptions": {
-      "header": {
-        "typ": "access"
-      },
-      "audience": "https://yourdomain.com",
-      "issuer": "feathers",
-      "algorithm": "HS256",
-      "expiresIn": "1d"
-    },
+    "authStrategies": ["local", "jwt"],
     "local": {
       "usernameField": "email",
       "passwordField": "password"
+    },
+    "jwt": {
+      "header": {
+        "type": "aceess"
+      },
+      "data": {
+        "aceess_token": ""
+      },
+      "verify": {
+        "ops": 6
+      }
     }
   },
-  "domain":"https://lunch-linebot.onrender.com",  
-  "mongodb": "mongodb+srv://chris0621:chris0621@cluster0.kyuxv1w.mongodb.net/?retryWrites=true&w=majority"
+  "mongodb": "MONGODB_CONNECTION_STRING",
+  "domain": "https://YOUR_DOMAIN.com",
+  "uploadPath": "/builduploads/",
+  "uploadShowPath": "/uploads/"
 }
