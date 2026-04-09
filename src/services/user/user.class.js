@@ -1,4 +1,4 @@
-const { Service } = require('feathers-mongodb')
+const { Service } = require('@feathersjs/mongodb')
 
 exports.User = class User extends Service {
   constructor (options, app) {
