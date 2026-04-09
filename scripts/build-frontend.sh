@@ -14,6 +14,7 @@ git clone --depth 1 https://github.com/ChrisLinOvO/lunchOrderFrontend.git
 
 echo "Installing dependencies..."
 cd lunchOrderFrontend
+export CI=false
 npm install --force
 
 echo "Building..."
