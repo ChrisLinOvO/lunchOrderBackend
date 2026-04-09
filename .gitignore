@@ -48,4 +48,9 @@ Thumbs.db
 *.mov
 *.wmv
 
-BackUp
+BackUp.env
+
+# Environment variables
+.env
+.env.local
+.env.*.local
