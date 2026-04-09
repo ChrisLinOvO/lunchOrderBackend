@@ -14,7 +14,6 @@ git clone --depth 1 https://github.com/ChrisLinOvO/lunchOrderFrontend.git
 
 echo "Installing dependencies and building..."
 cd lunchOrderFrontend
-rm -f package-lock.json yarn.lock
 npm install --legacy-peer-deps
 npm run build
 
