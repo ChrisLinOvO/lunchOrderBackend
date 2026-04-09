@@ -49,3 +49,7 @@ Thumbs.db
 *.wmv
 
 BackUp
+# Environment variables
+.env
+.env.local
+.env.*.local
