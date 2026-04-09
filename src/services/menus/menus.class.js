@@ -1,4 +1,4 @@
-const { Service } = require('@feathersjs/mongodb')
+const { Service } = require('feathers-mongodb')
 
 exports.Menus = class Menus extends Service {
   constructor (options, app) {
