@@ -15,6 +15,7 @@ git clone --depth 1 https://github.com/ChrisLinOvO/lunchOrderFrontend.git
 echo "Installing dependencies and building..."
 cd lunchOrderFrontend
 npm install --legacy-peer-deps
+npm install ajv@8 --legacy-peer-deps
 npm run build
 
 echo "Copying build files to public/build..."
