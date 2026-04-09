@@ -53,3 +53,4 @@ BackUp
 .env
 .env.local
 .env.*.local
+public/build/build

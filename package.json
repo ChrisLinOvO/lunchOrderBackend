@@ -27,7 +27,8 @@
     "lint": "standard",
     "dev": "nodemon src/",
     "start": "node src/",
-    "jest": "jest --forceExit"
+    "jest": "jest --forceExit",
+    "pull-frontend": "git submodule update --init --recursive && bash scripts/pull-and-build-frontend.sh"
   },
   "standard": {
     "env": [
