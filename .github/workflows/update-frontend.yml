@@ -1,0 +1,29 @@
+name: Update Frontend Build
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    # Run every 6 hours to keep frontend fresh
+    - cron: '0 */6 * * *'
+
+jobs:
+  update-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Build frontend from lunchOrderFrontend
+        run: bash scripts/build-frontend.sh
+
+      - name: Create PR if there are changes
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repo: ChrisLinOvO/lunchOrderBackend
+          branch: ai/update-frontend
+          title: "chore: update frontend build"
+          base: master
+          delete-branch: true
