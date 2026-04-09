@@ -12,10 +12,11 @@ cd /tmp
 rm -rf lunchOrderFrontend 2>/dev/null || true
 git clone --depth 1 https://github.com/ChrisLinOvO/lunchOrderFrontend.git
 
-echo "Installing dependencies and building..."
+echo "Installing dependencies..."
 cd lunchOrderFrontend
-npm install --legacy-peer-deps
-npm install ajv@8 --legacy-peer-deps
+npm install --force
+
+echo "Building..."
 npm run build
 
 echo "Copying build files to public/build..."
