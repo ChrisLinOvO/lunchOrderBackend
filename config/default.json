@@ -15,7 +15,7 @@
       "usernameField": "email",
       "passwordField": "password"
     },
-    "jwt": {
+    "jwtOptions": {
       "header": {
         "type": "aceess"
       },
