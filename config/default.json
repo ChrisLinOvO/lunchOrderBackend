@@ -28,7 +28,7 @@
     }
   },
   "mongodb": "mongodbdata",
-  "domain": "${domain}",
+  "domain": "https://lunch-linebot.onrender.com",
   "uploadPath": "/builduploads/",
   "uploadShowPath": "/uploads/"
 }
