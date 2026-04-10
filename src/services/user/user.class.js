@@ -5,6 +5,10 @@ exports.User = class User extends Service {
     super(options)
 
     app.get('mongoClient').then(db => {
+      if (db == null) {
+        console.warn('[User] MongoDB not connected, service unavailable')
+        return
+      }
       this.Model = db.collection('user')
     })
   }
