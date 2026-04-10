@@ -2,7 +2,7 @@ const express = require('@feathersjs/express')
 const { Uploads } = require('./uploads.class')
 const hooks = require('./uploads.hooks')
 const multer = require('multer')// 多檔案上傳
-const { ObjectID } = require('mongodb')
+const { ObjectId } = require('mongodb')
 const fs = require('fs')// --For 刪除檔案
 
 const BaseUploadsRoute = 'public/build/uploads/'// 上傳檔案放置路徑
@@ -99,11 +99,11 @@ const handlePatchService = (app, sName, body, users, uid) => { // 更新service 
       // const Res = await app.service('vote').create(body,{ user:users });
 
       if (Object.keys(body).length === 0) { // body為空
-        const Res = await app.service(sName).find({ query: { _id: new ObjectID(uid) } })
+        const Res = await app.service(sName).find({ query: { _id: new ObjectId(uid) } })
         if (Res.total > 0) resolve(Res.data[0]._id)
         else { return reject(new Error('找不到該id資料')) }
       } else { // 更新body不為空時
-        const Res = await app.service(sName).patch(new ObjectID(uid), body)
+        const Res = await app.service(sName).patch(new ObjectId(uid), body)
         resolve(Res._id)
       }
     } catch (error) {
