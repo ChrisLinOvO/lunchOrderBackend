@@ -7,7 +7,7 @@ process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection:', reason)
 })
 
-const port = (app.get('port') && !isNaN(app.get('port'))) ? app.get('port') : (process.env.PORT || 3030)
+const port = process.env.PORT || app.get('port') || 3030
 const host = app.get('host') || '0.0.0.0'
 
 app.listen(port, host).then(server => {
