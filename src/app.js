@@ -18,8 +18,6 @@ const channels = require('./channels')
 const authentication = require('./authentication')
 
 const mongodb = require('./mongodb')
-//jackadmin / jack12345
-//"mongodb": "mongodb://localhost:27017/date"
 
 const app = express(feathers())
 
