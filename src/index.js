@@ -9,7 +9,7 @@ process.on('unhandledRejection', (reason, p) =>
 const port = app.get('port') || process.env.PORT || 3030
 const host = app.get('host') || '0.0.0.0'
 
-app.listen(port, host).then(server => {
+App.listen(port, host).then(server => {
   logger.info(`Feathers application started on http://${host}:${port}`)
 }).catch(err => {
   logger.error('Failed to start server:', err)
