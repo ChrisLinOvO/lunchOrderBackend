@@ -41,7 +41,7 @@ app.get('/err/noAuth', (req, res) => { // 沒有權限之跳轉頁面
 })
 
 // app.use('/', express.static(app.get('public')));
-app.use('/', express.static(app.get('public')))
+app.use('/', express.static(path.join(__dirname, '..', 'public', 'build')))
 
 app.get('/seller', (req, res) => { // 導到/ezcon
   res.sendFile(path.join(app.get('public'), '/index.html'))
