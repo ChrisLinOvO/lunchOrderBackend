@@ -27,7 +27,7 @@
       }
     }
   },
-  "mongodb": "mongodbdata",
+  "mongodb": "${mongodbdata}",
   "domain": "https://YOUR_DOMAIN.com",
   "uploadPath": "/builduploads/",
   "uploadShowPath": "/uploads/"
