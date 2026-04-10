@@ -33,7 +33,7 @@ app.use(cors())
 app.use(compress())
 // app.use(express.json())//line webhook資料格式object導致沒轉到
 // app.use(express.urlencoded({ extended: true }))//line webhook資料格式object導致沒轉到
-app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
+app.use(favicon(path.join(__dirname, '../public/favicon.ico')))
 // Host the public folder
 
 app.get('/err/noAuth',(req,res)=>{//沒有權限之跳轉頁面
