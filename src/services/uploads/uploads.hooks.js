@@ -1,7 +1,7 @@
 const fs = require('fs')// --For 刪除檔案
 const { promisify } = require('util')// --For 刪除檔案
 const unlinkAsync = promisify(fs.unlink)// --For 刪除檔案
-const { ObjectId } = require('mongodb')
+const { ObjectID } = require('mongodb')
 
 // uploads Removed => 本機(單一)檔案移除
 const removeDirFile = async (context) => {
@@ -26,7 +26,7 @@ const removeOtherTodayMenu = async (context) => { // 移除 其他有該key的 u
       {
         $unset: { isMenu: '' }// 刪除'user'相關驗證data
       },
-      { query: { _id: { $ne: new ObjectId(result._id) } } }
+      { query: { _id: { $ne: new ObjectID(result._id) } } }
     )
     return context
   } catch (error) {
