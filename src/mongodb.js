@@ -13,7 +13,7 @@ module.exports = function (app) {
   // Validate connection string before attempting to connect
   if (!connection || typeof connection !== 'string') {
     console.error('[MongoDB] Missing or invalid mongodb connection string: app.get("mongodb") returned', connection)
-    console.error('[MongoDB] Please set the MONGODB_CONNECTION_STRING environment variable')
+    console.error('[MongoDB] Please set the mongodbdata environment variable')
     app.set('mongoClient', Promise.resolve(null))
     return
   }
@@ -25,7 +25,7 @@ module.exports = function (app) {
   if (!hasValidScheme) {
     console.error(`[MongoDB] Invalid connection string scheme: "${connection.substring(0, 20)}..."`)
     console.error('[MongoDB] Expected connection string to start with "mongodb://" or "mongodb+srv://"')
-    console.error('[MongoDB] Please check your MONGODB_CONNECTION_STRING environment variable')
+    console.error('[MongoDB] Please check your mongodbdata environment variable')
     app.set('mongoClient', Promise.resolve(null))
     return
   }
