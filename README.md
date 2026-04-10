@@ -15,9 +15,11 @@
 
 | 變數 | 說明 |
 |------|------|
+| `MONGODB_CONNECTION_STRING` | MongoDB 連線字串，格式：`mongodb://...` 或 `mongodb+srv://...` |
 | `channelAccessToken` | LINE Channel Access Token |
 | `channelSecret` | LINE Channel Secret |
-| `mongodbdata` | MongoDB 連線字串 |
+| `PORT` | 伺服器端口（預設 3030） |
+| `domain` | 部署網域，例如 `https://your-app.onrender.com` |
 
 ## 開發
 
