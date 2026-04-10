@@ -77,7 +77,7 @@ function createAccountById (app, uid) {
         name: trueName.displayName ? trueName.displayName : uid,
         img: trueName.pictureUrl ? trueName.pictureUrl : ''
       })
-      let doMain = app.get('domain')
+      let doMain = process.env.domain || app.get('domain')
       const btEd = btoa(`a=${uid}&d=${randomPSD}`)
       doMain = doMain + '?e=' + btEd
       return resolve(doMain)
