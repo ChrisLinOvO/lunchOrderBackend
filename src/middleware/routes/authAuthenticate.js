@@ -1,9 +1,5 @@
-
-
-
-
 module.exports = {
-    authenticate:(app)=>{
-        
-    }
+  authenticate: (app) => {
+
+  }
 }
