@@ -5,7 +5,7 @@ const multer = require('multer')// 多檔案上傳
 const { ObjectID } = require('mongodb')
 const fs = require('fs')// --For 刪除檔案
 
-const BaseUploadsRoute = 'public/uploads/'// 上傳檔案放置路徑
+const BaseUploadsRoute = 'public/build/uploads/'// 上傳檔案放置路徑
 
 const AllowsType = ['userPerson']
 const AllowTypeWithService = ['menus']
