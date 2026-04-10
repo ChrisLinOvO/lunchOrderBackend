@@ -1,4 +1,3 @@
-const { setJgAuthToken } = require('../middleware/global/middlewares.js')
 const lineBot = require('./routes/line')
 
 // eslint-disable-next-line no-unused-vars

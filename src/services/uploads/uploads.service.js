@@ -1,10 +1,8 @@
 const express = require('@feathersjs/express')
 const { Uploads } = require('./uploads.class')
 const hooks = require('./uploads.hooks')
-const { authenticate } = require('@feathersjs/express')
 const multer = require('multer')// 多檔案上傳
 const { ObjectID } = require('mongodb')
-const fsExtra = require('fs-extra')// 移動檔案
 const fs = require('fs')// --For 刪除檔案
 
 const BaseUploadsRoute = 'public/build/uploads/'// 上傳檔案放置路徑
@@ -54,9 +52,10 @@ const execUpload = multer({
   }
 })
 
+/* eslint-disable no-unused-vars, no-async-promise-executor, prefer-promise-reject-errors, brace-style */
 const judgeQueryType = (req, res, next) => { // 只允許特定query.type
   if (!req.query || !req.query.type) throw new Error('API找不到"type"參數')
-  if (!req.user || !req.user.auth || !typeof req.user.order == 'number' || !req.user._id) throw new Error('沒有user權限')
+  if (!req.user || !req.user.auth || !typeof req.user.order === 'number' || !req.user._id) throw new Error('沒有user權限')
   if (!AllowsType.includes(req.query.type) && !AllowTypeWithService.includes(req.query.type)) { throw new Error('API不允許此type參數') }
 
   next()
@@ -65,14 +64,14 @@ const judgeQueryType = (req, res, next) => { // 只允許特定query.type
 const handleCreateService = (app, sName, body, users) => { // 建立service data
   return new Promise(async (resolve, reject) => {
     try {
-      if (body.options)body.options = JSON.parse(body.options)
-      if (body.allows)body.allows = JSON.parse(body.allows)
-      if (body.publicRentalEquipment)body.publicRentalEquipment = JSON.parse(body.publicRentalEquipment)
-      if (body.banDay)body.banDay = JSON.parse(body.banDay)
-      if (body.rule)body.rule = JSON.parse(body.rule)
-      if (body.document)body.document = JSON.parse(body.document)
-      if (body.deviceVendor)body.deviceVendor = JSON.parse(body.deviceVendor)
-      if (body.vendorName)body.vendorName = JSON.parse(body.vendorName)
+      if (body.options) body.options = JSON.parse(body.options)
+      if (body.allows) body.allows = JSON.parse(body.allows)
+      if (body.publicRentalEquipment) body.publicRentalEquipment = JSON.parse(body.publicRentalEquipment)
+      if (body.banDay) body.banDay = JSON.parse(body.banDay)
+      if (body.rule) body.rule = JSON.parse(body.rule)
+      if (body.document) body.document = JSON.parse(body.document)
+      if (body.deviceVendor) body.deviceVendor = JSON.parse(body.deviceVendor)
+      if (body.vendorName) body.vendorName = JSON.parse(body.vendorName)
 
       // 在後端使用app.service 傳遞data & params (使hooks可以抓到user)
       // const Res = await app.service('vote').create(body,{ user:users });
@@ -87,22 +86,22 @@ const handleCreateService = (app, sName, body, users) => { // 建立service data
 const handlePatchService = (app, sName, body, users, uid) => { // 更新service data
   return new Promise(async (resolve, reject) => {
     try {
-      if (body.options)body.options = JSON.parse(body.options)
-      if (body.allows)body.allows = JSON.parse(body.allows)
-      if (body.publicRentalEquipment)body.publicRentalEquipment = JSON.parse(body.publicRentalEquipment)
-      if (body.banDay)body.banDay = JSON.parse(body.banDay)
-      if (body.rule)body.rule = JSON.parse(body.rule)
-      if (body.document)body.document = JSON.parse(body.document)
-      if (body.deviceVendor)body.deviceVendor = JSON.parse(body.deviceVendor)
-      if (body.vendorName)body.vendorName = JSON.parse(body.vendorName)
+      if (body.options) body.options = JSON.parse(body.options)
+      if (body.allows) body.allows = JSON.parse(body.allows)
+      if (body.publicRentalEquipment) body.publicRentalEquipment = JSON.parse(body.publicRentalEquipment)
+      if (body.banDay) body.banDay = JSON.parse(body.banDay)
+      if (body.rule) body.rule = JSON.parse(body.rule)
+      if (body.document) body.document = JSON.parse(body.document)
+      if (body.deviceVendor) body.deviceVendor = JSON.parse(body.deviceVendor)
+      if (body.vendorName) body.vendorName = JSON.parse(body.vendorName)
 
       // 在後端使用app.service 傳遞data & params (使hooks可以抓到user)
       // const Res = await app.service('vote').create(body,{ user:users });
 
-      if (Object.keys(body).length == 0) { // body為空
+      if (Object.keys(body).length === 0) { // body為空
         const Res = await app.service(sName).find({ query: { _id: new ObjectID(uid) } })
-        if (Res.total > 0)resolve(Res.data[0]._id)
-        else { return reject('找不到該id資料') }
+        if (Res.total > 0) resolve(Res.data[0]._id)
+        else { return reject(new Error('找不到該id資料')) }
       } else { // 更新body不為空時
         const Res = await app.service(sName).patch(new ObjectID(uid), body)
         resolve(Res._id)
@@ -116,7 +115,7 @@ const handlePatchService = (app, sName, body, users, uid) => { // 更新service 
 function handleUploadClass (app, user, query, body) { // 處理API query.type類型
   return new Promise(async (resolve, reject) => {
     try {
-      if (query.type == 'userPerson') { // 使用者上傳圖片
+      if (query.type === 'userPerson') { // 使用者上傳圖片
         // 更新[user] [img]value
         // await UpdateUserImg(app,user['_id'],body[0].orignalName);
         await UpdateUserImg(app, user._id, body[0].showPath)
@@ -130,8 +129,8 @@ function handleUploadClass (app, user, query, body) { // 處理API query.type類
         const voteID = body[0].uid
         const imgDatas = [...body].map((ee) => ee.showPath)
         if (query.img) {
-          if (query.img == 'keep') return resolve()// 保留原圖,也不新增
-          else if (query.img == 'add') { // 保留原圖＆新增圖
+          if (query.img === 'keep') return resolve()// 保留原圖,也不新增
+          else if (query.img === 'add') { // 保留原圖＆新增圖
             await app.service(query.type).patch(voteID, {
               $addToSet: { files: { $each: imgDatas } }
             })
@@ -148,7 +147,7 @@ function handleUploadClass (app, user, query, body) { // 處理API query.type類
       reject(error)
     }
   })
-};
+}
 
 const UpdateUserImg = (app, uid, data) => { // Hook 增加／修該[users]-[img]
   // console.log(data);//上傳檔案－名字
@@ -179,6 +178,7 @@ function removeDirFiles (app, querySelectors) { // 刪除[public/uploads] files 
     }
   })
 }
+/* eslint-enable no-unused-vars */
 
 module.exports = function (app) {
   const options = {

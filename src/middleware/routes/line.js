@@ -4,7 +4,6 @@ const config = {
   channelSecret: process.env.channelSecret
 }
 const client = new line.Client(config)
-const { ObjectID } = require('mongodb')
 const axios = require('axios')
 
 module.exports = {
@@ -14,6 +13,7 @@ module.exports = {
         .all(req.body.events.map((e) => handleEvent(e, app)))
         .then((result) => res.json(result))
         .catch((err) => {
+          console.error(err)
           res.status(500).end()
         })
     })
@@ -23,27 +23,27 @@ module.exports = {
 // event handler
 async function handleEvent (event, app) {
   const TheId = event.source.type === 'user' ? event.source.userId : event.source.groupId
-  if (event.type == 'follow' || event.type == 'join') {
+  if (event.type === 'follow' || event.type === 'join') {
     await createAccountById(app, TheId)
       .then(() => { return client.replyMessage(event.replyToken, { type: 'text', text: '註冊成功!' }) })
       .catch(() => { return client.replyMessage(event.replyToken, { type: 'text', text: '已註冊,歡迎回來!' }) })
   } else if (event.postback) {
-    if (event.postback.data == 'action=startorder') {
+    if (event.postback.data === 'action=startorder') {
       await createOrderData(app, TheId)
         .then((outUrl) => { return client.replyMessage(event.replyToken, { type: 'text', text: outUrl }) })
         .catch(() => { return client.replyMessage(event.replyToken, { type: 'text', text: 'ERR 沒有使用者!' }) })
-    } else if (event.postback.data == 'action=removeorder') {
+    } else if (event.postback.data === 'action=removeorder') {
       await removeUserUnfinishMenu(app, TheId)
         .then((outUrl) => { return client.replyMessage(event.replyToken, { type: 'text', text: outUrl }) })
-        .catch(() => { return client.replyMessage(event.replyToken, { type: 'text', text: err }) })
+        .catch((err) => { return client.replyMessage(event.replyToken, { type: 'text', text: err }) })
     }
   } else {
-    if (event.message.text == '吃' || event.message.text == '吃什麼') {
+    if (event.message.text === '吃' || event.message.text === '吃什麼') {
       await findMenuImages(app).then(async (url) => {
         console.log('Ready to Return:', url, event.replyToken)
         return client.replyMessage(event.replyToken, await CreateFlexImgBox(url))
       })
-    } else if (event.message.text == '?' || event.message.text == '說明') {
+    } else if (event.message.text === '?' || event.message.text === '說明') {
       return client.replyMessage(event.replyToken, { type: 'text', text: '輸入"吃","吃什麼"來取得今日菜單圖片。\r\n輸入"點餐"建立訂單。\r\n 輸入"?","說明"看說明文字' })
     } else if (event.message.text !== '訂單建置中' && event.message.text !== '移除訂單中') {
       await dealTextPatchOrderData(app, TheId, event.message.text)
@@ -56,7 +56,7 @@ async function handleEvent (event, app) {
 }
 
 function createAccountById (app, uid) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
     try {
       const trueName = await axios.get(`https://api.line.me/v2/bot/profile/${uid}`, {
         headers: {
@@ -82,13 +82,13 @@ function createAccountById (app, uid) {
       doMain = doMain + '?e=' + btEd
       return resolve(doMain)
     } catch (error) {
-      return reject()
+      return reject(new Error(error.message || error))
     }
   })
 }
 
 function createOrderData (app, uid) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
     try {
       const { name } = (await getUserDataByUid(app, uid))
       console.log('name', name)
@@ -105,13 +105,13 @@ function createOrderData (app, uid) {
       return resolve('建立成功,請輸入訂單菜色:')
     } catch (error) {
       console.log('cOD Err:', error)
-      return reject(error.message || error)
+      return reject(new Error(error.message || error))
     }
   })
 }
 
 function getUserDataByUid (app, uid) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
     try {
       const Res = await app.service('user').find({
         query: {
@@ -121,13 +121,13 @@ function getUserDataByUid (app, uid) {
       return resolve(Res.total > 0 ? Res.data[0] : [])
     } catch (error) {
       console.log('NaNi::', error)
-      return reject(error.message || error)
+      return reject(new Error(error.message || error))
     }
   })
 }
 
 function dealTextPatchOrderData (app, uid, text) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve, reject) => { // eslint-disable-line no-async-promise-executor
     try {
       const Res0 = await app.service('orders').find({
         query: {
@@ -137,12 +137,12 @@ function dealTextPatchOrderData (app, uid, text) {
           }
         }
       })
-      if (Res0.total == 0) {
+      if (Res0.total === 0) {
         const Res = await createOrderData(app, uid)
         return resolve(Res)
       } else {
         const tData = Res0.data[0]
-        if (tData.stage == '初始') {
+        if (tData.stage === '初始') {
           await app.service('orders').patch(
             tData._id,
             {
@@ -165,13 +165,13 @@ function dealTextPatchOrderData (app, uid, text) {
       }
     } catch (error) {
       console.log('Ttt:', error)
-      return reject(error.message || error)
+      return reject(new Error(error.message || error))
     }
   })
 }
 
 function findMenuImages (app) {
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve) => { // eslint-disable-line no-async-promise-executor
     try {
       const theDomain = app.get('domain')
       const Res = await app.service('uploads').find({
@@ -179,7 +179,7 @@ function findMenuImages (app) {
           isMenu: { $exists: true }
         }
       })
-      if (Res.total == 0) throw new Error('No Data')
+      if (Res.total === 0) throw new Error('No Data')
       const picPlace = Res.data[0].showPath
       if (!picPlace) throw new Error('No Data key')
       return resolve(`${theDomain}${picPlace}`)
@@ -190,7 +190,7 @@ function findMenuImages (app) {
 }
 
 function removeUserUnfinishMenu (app, uid) {
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve) => { // eslint-disable-line no-async-promise-executor
     try {
       await app.service('orders').remove(null, {
         query: {
