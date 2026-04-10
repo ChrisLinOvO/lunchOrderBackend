@@ -15,7 +15,7 @@
 
 | 變數 | 說明 |
 |------|------|
-| `MONGODB_CONNECTION_STRING` | MongoDB 連線字串，格式：`mongodb://...` 或 `mongodb+srv://...` |
+| `mongodbdata` | MongoDB 連線字串，格式：`mongodb://...` 或 `mongodb+srv://...` |
 | `channelAccessToken` | LINE Channel Access Token |
 | `channelSecret` | LINE Channel Secret |
 | `PORT` | 伺服器端口（預設 3030） |
