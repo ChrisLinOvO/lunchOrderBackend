@@ -1,18 +1,12 @@
 const MongoClient = require('mongodb').MongoClient
 
 module.exports = function (app) {
-  let connection
-  try {
-    connection = app.get('mongodb')
-  } catch (err) {
-    console.error('[MongoDB] Failed to get mongodb config:', err.message)
-    app.set('mongoClient', Promise.resolve(null))
-    return
-  }
+  // Read connection string from mongodbdata env var directly (Feathers config substitution may not work for this key)
+  const connection = process.env.mongodbdata || app.get('mongodb')
 
   // Validate connection string before attempting to connect
   if (!connection || typeof connection !== 'string') {
-    console.error('[MongoDB] Missing or invalid mongodb connection string: app.get("mongodb") returned', connection)
+    console.error('[MongoDB] Missing or invalid mongodb connection string. Checked process.env.mongodbdata and app.get("mongodb"):', connection)
     console.error('[MongoDB] Please set the mongodbdata environment variable')
     app.set('mongoClient', Promise.resolve(null))
     return
