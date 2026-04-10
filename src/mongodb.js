@@ -1,14 +1,20 @@
 const MongoClient = require('mongodb').MongoClient
 
 module.exports = function (app) {
-  const connection = app.get('mongodb')
+  let connection
+  try {
+    connection = app.get('mongodb')
+  } catch (err) {
+    console.error('[MongoDB] Failed to get mongodb config:', err.message)
+    app.set('mongoClient', Promise.resolve(null))
+    return
+  }
 
   // Validate connection string before attempting to connect
   if (!connection || typeof connection !== 'string') {
     console.error('[MongoDB] Missing or invalid mongodb connection string: app.get("mongodb") returned', connection)
     console.error('[MongoDB] Please set the MONGODB_CONNECTION_STRING environment variable')
-    // Don't crash the app, but mark mongoClient as a rejected promise
-    app.set('mongoClient', Promise.reject(new Error('Invalid MongoDB connection string')))
+    app.set('mongoClient', Promise.resolve(null))
     return
   }
 
@@ -20,22 +26,28 @@ module.exports = function (app) {
     console.error(`[MongoDB] Invalid connection string scheme: "${connection.substring(0, 20)}..."`)
     console.error('[MongoDB] Expected connection string to start with "mongodb://" or "mongodb+srv://"')
     console.error('[MongoDB] Please check your MONGODB_CONNECTION_STRING environment variable')
-    app.set('mongoClient', Promise.reject(new Error('Invalid MongoDB connection string scheme')))
+    app.set('mongoClient', Promise.resolve(null))
     return
   }
 
   const database = connection.substr(connection.lastIndexOf('/') + 1).split('?')[0]
 
-  const mongoClient = MongoClient.connect(connection)
-    .then(client => {
-      console.log('[MongoDB] Connected successfully to database:', database)
-      return client.db(database)
-    })
-    .catch(err => {
-      console.error('[MongoDB] Connection failed:', err.message)
-      // Return null so app can start without MongoDB (graceful degradation)
-      return null
-    })
+  // Wrap in try-catch to handle synchronous throws from MongoClient.connect
+  try {
+    const mongoClient = MongoClient.connect(connection)
+      .then(client => {
+        console.log('[MongoDB] Connected successfully to database:', database)
+        return client.db(database)
+      })
+      .catch(err => {
+        console.error('[MongoDB] Connection failed:', err.message)
+        // Graceful degradation: return null so app can start without MongoDB
+        return null
+      })
 
-  app.set('mongoClient', mongoClient)
+    app.set('mongoClient', mongoClient)
+  } catch (err) {
+    console.error('[MongoDB] MongoClient.connect() threw synchronously:', err.message)
+    app.set('mongoClient', Promise.resolve(null))
+  }
 }
