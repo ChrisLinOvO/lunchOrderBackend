@@ -1,9 +1,8 @@
-const { setJgAuthToken } = require('../middleware/global/middlewares.js');
-const lineBot = require('./routes/line');
+const { setJgAuthToken } = require('../middleware/global/middlewares.js')
+const lineBot = require('./routes/line')
 
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
-
   // app.get('*',//No Auth return
   // setJgAuthToken,
   // (req,res,next)=>{
@@ -27,6 +26,5 @@ module.exports = function (app) {
   //   return res.send('Goooooood')
   // });
 
-  lineBot.handleWebhook(app);
-
+  lineBot.handleWebhook(app)
 }

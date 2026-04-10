@@ -34,22 +34,22 @@ app.use(compress())
 app.use(favicon(path.join(__dirname, '../public/favicon.ico')))
 // Host the public folder
 
-app.get('/err/noAuth',(req,res)=>{//沒有權限之跳轉頁面
-  let txt = '沒有登入權限,請至LineBot重新登入!';
-  if(req.query && req.query.txt)txt = req.query.txt;
-  return res.send(txt); 
-});
+app.get('/err/noAuth', (req, res) => { // 沒有權限之跳轉頁面
+  let txt = '沒有登入權限,請至LineBot重新登入!'
+  if (req.query && req.query.txt)txt = req.query.txt
+  return res.send(txt)
+})
 
-//app.use('/', express.static(app.get('public')));
-app.use('/',express.static(app.get('public')));
+// app.use('/', express.static(app.get('public')));
+app.use('/', express.static(app.get('public')))
 
-app.get('/seller',(req,res)=>{//導到/ezcon  
-  res.sendFile(path.join(app.get('public'),'/index.html'));
-});
+app.get('/seller', (req, res) => { // 導到/ezcon
+  res.sendFile(path.join(app.get('public'), '/index.html'))
+})
 
-app.get('/admin',(req,res)=>{//導到/ezcon
-  res.sendFile(path.join(app.get('public'),'/index.html'));
-});
+app.get('/admin', (req, res) => { // 導到/ezcon
+  res.sendFile(path.join(app.get('public'), '/index.html'))
+})
 
 // Set up Plugins and providers
 app.configure(express.rest())

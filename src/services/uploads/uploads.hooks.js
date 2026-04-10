@@ -1,52 +1,52 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const fs = require('fs')//--For 刪除檔案
-const { promisify } = require('util');//--For 刪除檔案
-const unlinkAsync = promisify(fs.unlink)//--For 刪除檔案
-const { ObjectID } = require('mongodb');
+const { authenticate } = require('@feathersjs/authentication').hooks
+const fs = require('fs')// --For 刪除檔案
+const { promisify } = require('util')// --For 刪除檔案
+const unlinkAsync = promisify(fs.unlink)// --For 刪除檔案
+const { ObjectID } = require('mongodb')
 
-//uploads Removed => 本機(單一)檔案移除
+// uploads Removed => 本機(單一)檔案移除
 const removeDirFile = async (context) => {
   try {
-    if(Array.isArray(context.result))return context;
+    if (Array.isArray(context.result)) return context
     // console.log('Before Result!!!',context.result);
-    await unlinkAsync(context.result.newNameWithPath).catch((e)=>{ console.log('uploads檔案不存在',e); });//uploads的file移除
-    return context;
+    await unlinkAsync(context.result.newNameWithPath).catch((e) => { console.log('uploads檔案不存在', e) })// uploads的file移除
+    return context
   } catch (error) {
-    console.log('??',error);    
-    return context;
-  }  
+    console.log('??', error)
+    return context
+  }
 }
 
-const removeOtherTodayMenu = async (context) => {//移除 其他有該key的 uploads
+const removeOtherTodayMenu = async (context) => { // 移除 其他有該key的 uploads
   try {
-    const { app, result, data } = context;    
-    if(Array.isArray(result))return context;
-    if(data.hasOwnProperty('$unset'))return;
+    const { app, result, data } = context
+    if (Array.isArray(result)) return context
+    if (data.hasOwnProperty('$unset')) return
     await app.service('uploads').patch(
       null,
       {
-        $unset:{ isMenu:'' }//刪除'user'相關驗證data
+        $unset: { isMenu: '' }// 刪除'user'相關驗證data
       },
-      { query:{ _id:{ $ne: new ObjectID(result._id) } } }
-    );
-    return context;
+      { query: { _id: { $ne: new ObjectID(result._id) } } }
+    )
+    return context
   } catch (error) {
-    console.log('Uploads Patch After Result ERR:',error);    
-    return context;
+    console.log('Uploads Patch After Result ERR:', error)
+    return context
   }
 }
 
 module.exports = {
   before: {
     all: [
-      //authenticate('jwt'),//驗證登入
+      // authenticate('jwt'),//驗證登入
     ],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [
-      
+
     ],
     remove: []
   },
@@ -63,7 +63,7 @@ module.exports = {
       removeOtherTodayMenu
     ],
     remove: [
-      removeDirFile,
+      removeDirFile
     ]
   },
 
@@ -76,4 +76,4 @@ module.exports = {
     patch: [],
     remove: []
   }
-};
+}
