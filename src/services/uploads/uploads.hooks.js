@@ -1,4 +1,3 @@
-const { authenticate } = require('@feathersjs/authentication').hooks
 const fs = require('fs')// --For 刪除檔案
 const { promisify } = require('util')// --For 刪除檔案
 const unlinkAsync = promisify(fs.unlink)// --For 刪除檔案
@@ -21,7 +20,7 @@ const removeOtherTodayMenu = async (context) => { // 移除 其他有該key的 u
   try {
     const { app, result, data } = context
     if (Array.isArray(result)) return context
-    if (data.hasOwnProperty('$unset')) return
+    if (Object.hasOwn(data, '$unset')) return
     await app.service('uploads').patch(
       null,
       {
