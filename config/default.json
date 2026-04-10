@@ -28,7 +28,7 @@
     }
   },
   "mongodb": "mongodbdata",
-  "domain": "http://localhost:3030",
+  "domain": "${domain}",
   "uploadPath": "/builduploads/",
   "uploadShowPath": "/uploads/"
 }
